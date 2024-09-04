@@ -2,9 +2,9 @@
 
 ## RemoteTrimmer: Adaptive Structural Pruning for Remote Sensing Image Classification
 
-[Guanwenjie Zou (邹广文杰)](https://multimodality.group/author/%E9%82%B9%E5%B9%BF%E6%96%87%E6%9D%B0/) 
+[Guanwenjie Zou (邹广文杰)*](https://multimodality.group/author/%E9%82%B9%E5%B9%BF%E6%96%87%E6%9D%B0/) 
 <img src="assets/hhu_logo.png" alt="Logo" width="15">, &nbsp; &nbsp;
-[Liang Yao (姚亮)](https://multimodality.group/author/%E5%A7%9A%E4%BA%AE/) 
+[Liang Yao (姚亮)*](https://multimodality.group/author/%E5%A7%9A%E4%BA%AE/) 
 <img src="assets/hhu_logo.png" alt="Logo" width="15">, &nbsp; &nbsp; 
 [Fan Liu (刘凡)](https://multimodality.group/author/%E5%88%98%E5%87%A1/) ✉ 
 <img src="assets/hhu_logo.png" alt="Logo" width="15">, &nbsp; &nbsp;
