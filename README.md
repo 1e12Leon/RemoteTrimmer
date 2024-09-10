@@ -11,6 +11,8 @@
 [Chuanyi Zhang (张传一)](https://ai.hhu.edu.cn/2023/0809/c17670a264073/page.htm) 
 <img src="assets/hhu_logo.png" alt="Logo" width="15">, &nbsp; &nbsp; 
 
+Xin Li (李鑫)
+<img src="assets/hhu_logo.png" alt="Logo" width="15">, &nbsp; &nbsp; 
 [Ning Chen (陈宁)](https://multimodality.group/author/%E9%99%88%E5%AE%81/) 
 <img src="assets/hhu_logo.png" alt="Logo" width="15">, &nbsp; &nbsp; 
 [Shengxiang Xu (徐圣翔)](https://multimodality.group/author/%E5%BE%90%E5%9C%A3%E7%BF%94/) 
