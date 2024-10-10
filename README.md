@@ -38,10 +38,42 @@ pip install torch-pruning
 ```
 
 ### How It Works
-We leverage intermediate outputs from SENet and scaling factors from the BN layer to map channel importance into the attention space.
+We leverage intermediate outputs from SENet and scaling factors from the BN layer to map channel importance into the attention space. During the post-pruning fine-tuning phase, we design a lateral inhibition loss function to emphasize difficult samples. Our method effectively addresses two key challenges in remote sensing model pruning: the lack of distinct channel importance and the prevalence of difficult samples.
+<div align=center> <img src="assets/overview.png" alt="overview" width="600"> </div>
 
+### A Example of Our Method
+loading resnet18 model with SENet
+```py
+import torch
+from resnet18_SE.py import resnet18_SE
 
+model = resnet18_SE(class_num) # class_num is the number of types of datasets
+```
 
+training model on EuroSAT datasets
+```py
+python train.py
+```
 
+extracting the intermediate outputs of SENet
+```py
+python get_attention.py
+```
 
+deleting SENet upon resnet18 and updating BN layer parameters
+```py
+python delete_SE_resnet18.py
+```
+
+pruning model
+```py
+python pruning.py
+```
+
+fine-tuning pruned model with Adaptive Mining Loss function
+```py
+from Adaptive_Mining_Loss import MyLoss
+
+loss_fn = MyLoss(r1=1, r2=1)
+```
 
