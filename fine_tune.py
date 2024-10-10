@@ -60,7 +60,6 @@ if torch.cuda.is_available():
     loss_fn = loss_fn.cuda()
 
 # Optimizer
-# learning_rate = 0.01
 learning_rate = 1e-2
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
@@ -117,10 +116,11 @@ def test():
             total_accuracy = total_accuracy + accuracy
             
     print("Loss on the whole test set：{}".format(total_test_loss))
-    print("Accuracy on the whole test set{}".format(total_accuracy/float(len(test_dataloader.dataset))))
+    print("Accuracy on the whole test set：{}".format(total_accuracy/float(len(test_dataloader.dataset))))
     return total_accuracy / float(len(test_dataloader.dataset))
 
 path2 = "model_save/"+name+"/train_best("+rate+")(epoch=40).pth.tar"
+# Save model data
 def save_checkpoint(state, is_best, filename='temp_model/train.pth.tar'):
     torch.save(state, filename)
     if is_best:
