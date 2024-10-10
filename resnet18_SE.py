@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.hub import load_state_dict_from_url
+
 class SELayer(nn.Module):
     def __init__(self, channel, reduction=16):
         super(SELayer, self).__init__()
@@ -18,15 +19,15 @@ class SELayer(nn.Module):
         y = self.fc(y).view(b, c, 1, 1)
         return x * y.expand_as(x)
 
-##resnet每个残差链接模块
+# Each residual connection module in ResNet
 class BasicBlock(nn.Module):
-    def __init__(self,inplanes: int,planes: int,stride: int = 1,downsample = None) -> None:
+    def __init__(self, inplanes: int, planes: int, stride: int = 1, downsample=None) -> None:
         super(BasicBlock, self).__init__()
-        self.conv1 = nn.Conv2d(inplanes,planes, 3, stride, padding=1, bias=False)
+        self.conv1 = nn.Conv2d(inplanes, planes, 3, stride, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
         self.relu = nn.ReLU(inplace=True)
         self.se1 = SELayer(planes)
-        self.conv2 = nn.Conv2d(planes, planes, 3, stride=1,padding=1, bias=False)
+        self.conv2 = nn.Conv2d(planes, planes, 3, stride=1, padding=1, bias=False)
         self.bn2 = nn.BatchNorm2d(planes)
         self.se2 = SELayer(planes)
         self.downsample = downsample
@@ -51,14 +52,13 @@ class BasicBlock(nn.Module):
         out = self.relu(out)
         return out
 
-
 class ResNet(nn.Module):
 
-    def __init__(self,layers: list, num_classes: int,zero_init_residual: bool = False) -> None:
+    def __init__(self, layers: list, num_classes: int, zero_init_residual: bool = False) -> None:
         super(ResNet, self).__init__()
         self.inplanes = 64
         self.dilation = 1
-        self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3,bias=False)
+        self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3, bias=False)
         self.bn1 = nn.BatchNorm2d(self.inplanes)
         self.relu = nn.ReLU(inplace=True)
         self.se1 = SELayer(channel=self.inplanes)
@@ -69,7 +69,7 @@ class ResNet(nn.Module):
         self.layer3 = self._make_layer(256, layers[2], stride=2)
         self.layer4 = self._make_layer(512, layers[3], stride=2)
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        #self.do = nn.Dropout(0.2)
+        # self.do = nn.Dropout(0.2)
         self.fc = nn.Linear(512, num_classes)
 
         for m in self.modules():
@@ -84,12 +84,13 @@ class ResNet(nn.Module):
                 if isinstance(m, BasicBlock):
                     nn.init.constant_(m.bn2.weight, 0)
 
-
-    def _make_layer(self, planes: int, blocks: int,stride: int = 1) -> nn.Sequential:
+    def _make_layer(self, planes: int, blocks: int, stride: int = 1) -> nn.Sequential:
         downsample = None
         if stride != 1 or self.inplanes != planes:
-            downsample = nn.Sequential(nn.Conv2d(self.inplanes, planes, 1, stride=stride, bias=False),
-                                       nn.BatchNorm2d(planes))
+            downsample = nn.Sequential(
+                nn.Conv2d(self.inplanes, planes, 1, stride=stride, bias=False),
+                nn.BatchNorm2d(planes)
+            )
         layers = []
         layers.append(BasicBlock(self.inplanes, planes, stride, downsample))
         self.inplanes = planes
@@ -98,7 +99,7 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        #先做7x7的卷积
+        # First, apply the 7x7 convolution
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
@@ -112,25 +113,24 @@ class ResNet(nn.Module):
 
         x = self.avgpool(x)
         x = torch.flatten(x, 1)
-        #x = self.do(x)
+        # x = self.do(x)
         x = self.fc(x)
 
         return x
 
-
-def resnet18_SE(num_classes, pretrained: bool = False, path= None, progress: bool = True) -> ResNet:
+def resnet18_SE(num_classes, pretrained: bool = False, path=None, progress: bool = True) -> ResNet:
     '''
-    pretrained决定是否用预训练的参数
-    如果没有指定自己预训练模型的路径，就从官方网站下载resnet18-f37072fd.pth
-    progress显示下载进度
+    `pretrained` determines whether to use pre-trained parameters.
+    If a custom pre-trained model path is not specified, it will download resnet18-f37072fd.pth from the official website.
+    `progress` shows the download progress.
     '''
-    model=ResNet([2, 2, 2, 2], num_classes, zero_init_residual= True)
+    model = ResNet([2, 2, 2, 2], num_classes, zero_init_residual=True)
     if pretrained:
         if not path:
-            pretrained_state_dict = load_state_dict_from_url('https://download.pytorch.org/models/resnet18-f37072fd.pth',progress=progress)
+            pretrained_state_dict = load_state_dict_from_url('https://download.pytorch.org/models/resnet18-f37072fd.pth', progress=progress)
         else:
             pretrained_state_dict = torch.load(path)
-        state_dict=model.state_dict()
+        state_dict = model.state_dict()
         for k in pretrained_state_dict:
             if k in state_dict and k not in ['fc.weight', 'fc.bias']:
                 state_dict[k] = pretrained_state_dict[k].data
