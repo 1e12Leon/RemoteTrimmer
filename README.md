@@ -41,7 +41,7 @@ pip install torch-pruning
 We leverage intermediate outputs from SENet and scaling factors from the BN layer to map channel importance into the attention space. During the post-pruning fine-tuning phase, we design a lateral inhibition loss function to emphasize difficult samples. Our method effectively addresses two key challenges in remote sensing model pruning: the lack of distinct channel importance and the prevalence of difficult samples.
 <div align=center> <img src="assets/overview.png" alt="overview" width="600"> </div>
 
-### A Example of Our Method
+### A Example of Our Method（model：resnet18；datasets：EuroSAT；pruning ratio：0.7）
 loading resnet18 model with SENet
 ```py
 import torch
