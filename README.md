@@ -30,3 +30,18 @@ Xin Li (李鑫)
 
 ### Contact
 Please Contact yaoliang@hhu.edu.cn
+
+### Installation
+Our pruning method utiles the torch-pruning framework, which is compatible with both PyTorch 1.x and 2.x versions.
+```py
+pip install torch-pruning
+```
+
+### How It Works
+We leverage intermediate outputs from SENet and scaling factors from the BN layer to map channel importance into the attention space.
+
+
+
+
+
+
