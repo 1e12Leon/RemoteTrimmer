@@ -25,6 +25,7 @@ Xin Li (李鑫)
 
 ### News
 
+- **2024/12/21**: The paper is accepted by ICASSP 2025!
 - **2024/07/29**: We propose an efficient structural pruning method for remote sensing image classification. Codes and models will be open-sourced at this repository.
 
 
